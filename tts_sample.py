@@ -9,6 +9,7 @@ def text_to_speech(text, output_file="output.mp3", language_code="ja-JP", speaki
         text (str): 音声に変換したいテキスト
         output_file (str): 出力ファイル名
         language_code (str): 言語コード（デフォルトは日本語）
+        speaking_rate (float): 話す速度（デフォルトは1.2）
     """
     # クライアントのインスタンスを作成
     client = texttospeech.TextToSpeechClient()
