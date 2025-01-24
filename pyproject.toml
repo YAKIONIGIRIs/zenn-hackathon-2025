@@ -6,4 +6,5 @@ readme = "README.md"
 requires-python = ">=3.11.10"
 dependencies = [
     "google-cloud-texttospeech>=2.24.0",
+    "vertexai>=1.71.1",
 ]
