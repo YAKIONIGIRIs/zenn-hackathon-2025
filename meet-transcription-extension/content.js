@@ -1,44 +1,62 @@
-let lastTranscript = '';
-let pendingTranscript = '';
+let lastTranscripts = new Map(); // ユーザーごとの最新のトランスクリプトを保持
+let pendingTranscripts = new Map(); // ユーザーごとの保留中のトランスクリプトを保持
 console.log('Content script loaded');
 
 // MutationObserverを使用して文字起こし要素の変更を監視
 const observer = new MutationObserver((mutations) => {
     console.log('Mutation detected', mutations.length);
-    const transcriptElement = document.querySelector('div[jsname="tgaKEf"].bh44bd.VbkSUe');
-    if (transcriptElement) {
-        console.log('Transcript element found');
-        const currentTranscript = transcriptElement.textContent.trim();
-        console.log('Current transcript:', currentTranscript);
+    const transcriptElements = document.querySelectorAll('div[jsname="tgaKEf"].bh44bd.VbkSUe');
+    
+    if (transcriptElements.length > 0) {
+        console.log('Transcript elements found:', transcriptElements.length);
         
-        if (currentTranscript && currentTranscript !== lastTranscript) {
-            // 新しい文字起こしが検出された場合
-            if (currentTranscript.startsWith(lastTranscript)) {
-                // 追加された部分を保存
-                const newText = currentTranscript.substring(lastTranscript.length).trim();
-                console.log('Appended text detected:', newText);
-                if (newText) {
-                    pendingTranscript = newText;
-                }
-            } else {
-                // 文章が更新された場合は全体を保存
-                console.log('Full text update detected');
-                pendingTranscript = currentTranscript;
+        // 各トランスクリプト要素の親要素から話者名を取得
+        transcriptElements.forEach(element => {
+            // トランスクリプト要素の親要素を辿って話者名を探す
+            let currentElement = element;
+            while (currentElement && !currentElement.querySelector('.KcIKyf.jxFHg')) {
+                currentElement = currentElement.parentElement;
             }
-            lastTranscript = currentTranscript;
-        } else {
-            console.log('No changes in transcript');
-        }
+
+            // 話者名要素を取得
+            const speakerElement = currentElement ? currentElement.querySelector('.KcIKyf.jxFHg') : null;
+            const speaker = speakerElement ? speakerElement.textContent.trim() : 'Unknown User';
+            const currentTranscript = element.textContent.trim();
+            
+            console.log('Found speaker element:', speakerElement);
+            console.log('Speaker:', speaker);
+            
+            if (currentTranscript) {
+                const lastTranscript = lastTranscripts.get(speaker) || '';
+                
+                // 新しいトランスクリプトが前回のものと異なる場合のみ更新
+                if (currentTranscript !== lastTranscript) {
+                    console.log(`Updated transcript from ${speaker}:`, currentTranscript);
+                    lastTranscripts.set(speaker, currentTranscript);
+                    pendingTranscripts.set(speaker, {
+                        user: speaker,
+                        transcript: currentTranscript
+                    });
+                }
+            }
+        });
     } else {
-        console.log('Transcript element not found');
+        console.log('No transcript elements found');
     }
 });
 
+// ユーザー名を取得する関数
+function getUserName() {
+    const userElement = document.querySelector('div.KcIKyf.jxFHg');
+    return userElement ? userElement.textContent.trim() : 'Unknown User';
+}
+
 // APIにデータを送信する関数
-async function sendToAPI(text) {
-    if (!text.trim()) return;
+async function sendToAPI(transcripts) {
+    if (transcripts.size === 0) return;
     
-    console.log('Attempting to send to API:', text);
+    const transcriptsArray = Array.from(transcripts.values());
+    console.log('Attempting to send to API:', transcriptsArray);
     try {
         const response = await fetch('http://localhost:8080/', {
             method: 'POST',
@@ -46,13 +64,13 @@ async function sendToAPI(text) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                transcript: text,
+                transcripts: transcriptsArray,
                 timestamp: new Date().toISOString()
             })
         });
         console.log('API Response:', response.status, response.statusText);
     } catch (error) {
-        console.error('Error sending transcript:', error);
+        console.error('Error sending transcripts:', error);
     }
 }
 
@@ -81,9 +99,9 @@ setInterval(() => {
 
 // 5秒ごとに蓄積されたテキストを送信
 setInterval(() => {
-    if (pendingTranscript) {
-        console.log('Sending batched transcript:', pendingTranscript);
-        sendToAPI(pendingTranscript);
-        pendingTranscript = ''; // 送信後にクリア
+    if (pendingTranscripts.size > 0) {
+        console.log('Sending batched transcripts:', pendingTranscripts);
+        sendToAPI(pendingTranscripts);
+        pendingTranscripts.clear(); // 送信後にクリア
     }
 }, 5000);
