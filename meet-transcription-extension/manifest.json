@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "Google Meet Transcription Capture",
+  "version": "1.0",
+  "description": "Google Meetの文字起こしをキャプチャしてAPIに送信します",
+  "permissions": [
+    "scripting",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://meet.google.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://meet.google.com/*"],
+      "js": ["content.js"]
+    }
+  ]
+} 
