@@ -58,7 +58,7 @@ async function sendToAPI(transcripts) {
     const transcriptsArray = Array.from(transcripts.values());
     console.log('Attempting to send to API:', transcriptsArray);
     try {
-        const response = await fetch('http://localhost:8080/', {
+        const response = await fetch('https://zenn-hackathon-2025-backend-666593730950.asia-northeast1.run.app/save_transcript', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
