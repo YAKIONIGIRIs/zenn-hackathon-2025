@@ -2,6 +2,8 @@ let lastTranscripts = new Map(); // ユーザーごとの最新のトランス�
 let pendingTranscripts = new Map(); // ユーザーごとの保留中のトランスクリプトを保持
 console.log('Content script loaded');
 
+const meetId = location.pathname.replace("/", "")
+
 // MutationObserverを使用して文字起こし要素の変更を監視
 const observer = new MutationObserver((mutations) => {
     console.log('Mutation detected', mutations.length);
@@ -56,6 +58,15 @@ async function sendToAPI(transcripts) {
     if (transcripts.size === 0) return;
     
     const transcriptsArray = Array.from(transcripts.values());
+    let sendDataArray = new Array();
+    transcriptsArray.forEach((element) => {
+        sendDataArray.push({
+            meetId: meetId,
+            userName: element.user,
+            transcript: element.transcript,
+            timestamp: new Date().toISOString()
+        })
+    })
     console.log('Attempting to send to API:', transcriptsArray);
     try {
         const response = await fetch('https://zenn-hackathon-2025-backend-666593730950.asia-northeast1.run.app/save_transcript', {
@@ -63,10 +74,7 @@ async function sendToAPI(transcripts) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                transcripts: transcriptsArray,
-                timestamp: new Date().toISOString()
-            })
+            body: JSON.stringify(sendDataArray)
         });
         console.log('API Response:', response.status, response.statusText);
     } catch (error) {
