@@ -87,11 +87,14 @@ Chrome上にChrome拡張機能をインストールします。
 @[card](https://github.com/YAKIONIGIRIs/zenn-hackathon-2025/tree/develop)
 
 次にChrome拡張機能を開きます。
-[chrome://extensions/](chrome://extensions/)にアクセスします。
+```
+chrome://extensions/
+```
+を検索窓に入力します。
 
 デベロッパーモードに変更したのちに、ダウンロードしたリポジトリの`meet-transcription-extension`フォルダを取り込みます。
 
-その後、[Google Meet](https://meet.google.com/にアクセスします。)にアクセスし、先ほど追加した拡張機能のアイコンをクリックします。すると、名前を入力する画面が右上に現れるため、ここにあなたの名前を入力します。
+その後、[Google Meet](https://meet.google.com/)にアクセスし、先ほど追加した拡張機能のアイコンをクリックします。すると、名前を入力する画面が右上に現れるため、ここにあなたの名前を入力します。
 
 （Google Meetの字幕機能では、自分の発言は「あなた」として文字起こしされてしまうため、話者を特定するために名前を入力します。）
 
