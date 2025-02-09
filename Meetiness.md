@@ -21,13 +21,13 @@ Zennユーザーの皆さんならそう答えてくれると信じています�
 みなさんが会社や学校などの組織に入りたてだった頃を思い出してください。
 **先輩の話している知らない言葉**は**業界用語**なのか、**社内（組織内）用語**なのか、**ジェネレーションギャップ**なのか**土地柄**なのか、そんな経験あると思います。
 Web会議が普及した現代においては、会議裏のウィンドウで公然とその単語を検索エンジンで調べるようになりました。
-少なくとも、筆者（まだまだ下っ端ピチピチ若手エンジニア）は分からんこといっぱいなので、そういった経験は豊富です。
+少なくとも、我々チームメンバーの1人（まだまだ下っ端ピチピチ若手エンジニアのT）は分からんこといっぱいなので、そういった経験は豊富です。
 
 でも、会議の裏で検索かけるのは手間ですよね。
 
 他にも手間なことはあります。
 例えば、**司会**、**書記**といった役割です。
-筆者（しばらく下っ端雑用担当エンジニア）は、書記を始めとしたさまざまな役割を任されがちです。
+チームメンバーのT（しばらく下っ端雑用担当エンジニア）は、書記を始めとしたさまざまな役割を任されがちです。
 名誉なことです。でもできれば手間はかけたくないです。手間はかけずに名誉だけ欲しいです。
 最近はAIによる文字起こし機能がリリースされ、書記にかかる負担は減ってきていますが、**司会**の負担は変わりません。
 
@@ -53,7 +53,7 @@ AIエージェントに辞書はもちろん、組織内の資料なども学習
 
 # サービスについて
 ### 「Meetiness」ダウンロードはこちらから
-@[card](https://github.com/YAKIONIGIRIs/zenn-hackathon-2025.git)
+@[card](https://github.com/YAKIONIGIRIs/zenn-hackathon-2025/tree/develop)
 
 ## ユーザー像
 このプロジェクトが対象とするのは、Web会議を使用するすべてのユーザーです。
@@ -65,11 +65,11 @@ AIエージェントに辞書はもちろん、組織内の資料なども学習
 
 ## 前提
 
-本サービスではGoogle拡張機能を使用しています。
+本サービスではChrome拡張機能を使用しています。
 サービスを使用する際はChrome上でお願いします。
 
-:::message alert
-他ブラウザでの動作確認は行っていません。
+:::message
+他ブラウザでの動作確認は行っていません。また、動作確認時点でのバージョンはChrome 132.0.6834.160です。
 :::
 
 ## 導入方法
@@ -78,21 +78,24 @@ AIエージェントに辞書はもちろん、組織内の資料なども学習
 
 Chrome上にChrome拡張機能をインストールします。
 
-:::message alert
+:::message
 現時点ではデベロッパーモードで拡張機能を読み込む必要があります。
 :::
 
-まずはGithubからソースコードをダウンロードします。
+まずはGitHubからソースコードをダウンロードします。
 
-@[card](https://github.com/YAKIONIGIRIs/zenn-hackathon-2025/tree/main)
+@[card](https://github.com/YAKIONIGIRIs/zenn-hackathon-2025/tree/develop)
 
 次にChrome拡張機能を開きます。
-以下のリンクをコピーして、Chromeの検索窓で叩いてください。
-```
-chrome://extensions/
-```
-デベロッパーモードに変更したのちに、Githubにある`meet-transcription-extension`フォルダを取り込みます。
-これで準備は完了です。
+[chrome://extensions/](chrome://extensions/)にアクセスします。
+
+デベロッパーモードに変更したのちに、ダウンロードしたリポジトリの`meet-transcription-extension`フォルダを取り込みます。
+
+その後、[Google Meet](https://meet.google.com/にアクセスします。)にアクセスし、先ほど追加した拡張機能のアイコンをクリックします。すると、名前を入力する画面が右上に現れるため、ここにあなたの名前を入力します。
+
+（Google Meetの字幕機能では、自分の発言は「あなた」として文字起こしされてしまうため、話者を特定するために名前を入力します。）
+
+
 
 ### 2. Google Meetを起動する
 
@@ -104,33 +107,72 @@ Gooogle Meet画面上にある「…」となっているボタンから「設�
 「字幕」タブにある「会議の使用言語」を`日本語`にして、「字幕を表示」を選択します。
 :::
 
+:::message
+字幕機能をオンにするのは、Google Meet参加者のうち1名のみにしてください。そうでないと、複数のクライアントから字幕がアップロードされ、補足情報の表示に影響を与えます。
+:::
+
+
 ### 3. 補足情報を表示する
 
 :::message
 アドオンは現在非公開です。
-以下はアドインをインストールして実行する方法を示しています。
+以下はアドオンをインストールして実行する方法を示しています。
+また、導入に当たっては有償版のGoogle Workspaceの契約およびGoogle Cloudへのアクセス権が必要です。
 :::
+
+Meet Add-on SDKのドキュメントの[Meetアドオンをデプロイする](https://developers.google.com/meet/add-ons/guides/deploy-add-on?hl=ja)を参考に、Meetinessのアドオンをデプロイします。なお、ここではプロジェクトの作成などの説明は省略します。
+
+1. [Google Workspace Marketplace SDK](https://console.cloud.google.com/apis/api/appsmarket-component.googleapis.com/)を有効化します。
+2. **[HTTP deployments]** タブをクリックします。
+3. **[新しいデプロイを作成]** をクリックし、アドオンのデプロイ ID (例: `meetiness-addon`)を入力します。
+4. 次へをクリックし、`DEPLOYMENT.JSON`に次のように入力します。
+
+```deployment.json
+{
+  "addOns": {
+    "common": {
+      "name": "Meetiness - Web会議サポートエージェント",
+      "logoUrl": "https://raw.githubusercontent.com/YAKIONIGIRIs/meet-addon/refs/heads/main/meetiness_logo.png"
+    },
+    "meet": {
+      "web": {
+        "sidePanelUri": "https://yakionigiris.github.io/meet-addon/hello-world-next-js/sidepanel",
+        "addOnOrigins": ["https://yakionigiris.github.io"],
+        "darkModeLogoUrl": "https://raw.githubusercontent.com/YAKIONIGIRIs/meet-addon/refs/heads/main/meetiness_logo.png"
+      }
+    }
+  }
+}
+```
+5. 作成したデプロイメントの **[インストール]** をクリックします。
+
+この手順を踏むと、Google Meetのアクティビティからアドオンにアクセスできるようになります。
+
 
 ## システム アーキテクチャ図
 今回はGoogle Cloud上でサービスの構築を行いました。
 使用したプロダクトは以下の通りです。
-・Cloud Run
-・Firestore
-・Vertex AI API
+
+- Cloud Run
+- Firestore
+- Gemini API in Vertex AI
+
 ![](https://storage.googleapis.com/zenn-user-upload/8434a792b3a5-20250208.png)
+
 ### クライアントの構成（画像左）
-1.クライアントはChromeにChrome拡張機能を導入し、Google Meetを立ち上げます。
+
+1. クライアントはChromeにChrome拡張機能を導入し、Google Meetを立ち上げます。
 この拡張機能でGoogle Meetが行う自動文字起こしをキャプチャし、サーバーに転送します。
 
-2.Google Meetにアドオンを追加します。
+2. Google Meetにアドオンを追加します。
 このアドオンはユーザーの立場（役職）を選択して、それに合わせた翻訳（用語解説）をリアルタイムでサーバーから受け取り表示させます。
 ![](https://storage.googleapis.com/zenn-user-upload/a91ec9bd212d-20250208.png)
 
 ### サーバーの構成（画面右）
-1.クライアントのChrome拡張機能から文字起こしされたデータをCloud Runで受け取ります。
+1. クライアントのChrome拡張機能から文字起こしされたデータをCloud Runで受け取ります。
 Cloud Runの上ではFlaskが動いており、受け取ったデータを整形してFirestoreに保存します。
 
-2.クライアントのGoogle MeetアドオンからCloud Runは定期的にリクエストを受け取り、アドオンで選択されたユーザーの立場（役職）とFirestoreに保存された文字起こしデータをVertex AI APIに投げます。
+2. クライアントのGoogle MeetアドオンからCloud Runは定期的にリクエストを受け取り、アドオンで選択されたユーザーの立場（役職）とFirestoreに保存された文字起こしデータをVertex AI APIに投げます。
 Vertex AI APIはユーザーの立場（役職）に合わせた翻訳（用語解説）をCloud Runに返します。
 Cloud Runはそれをクライアントのアドオンへ表示させます。
 ![](https://storage.googleapis.com/zenn-user-upload/e4bf18c2f40e-20250208.png)
@@ -142,6 +184,9 @@ Cloud Runはそれをクライアントのアドオンへ表示させます。
 そんなことできるのかって？
 できるんです。
 そう、AIエージェント **「Meetiness」** ならね！
+
+https://youtu.be/Yagm1Nd6Xwc
+
 
 # これからの展望
 ## マルチプラットフォーム化
@@ -167,7 +212,7 @@ Web会議を拡張するサービスとしては、[Notta](https://www.notta.ai/
 
 ## もっとスマートに文字起こしのデータを取得したかった。
 現在はGoogle Meetが画面上に表示させる字幕をHTMLから読み取るという愚直も愚直な実装を行っています。
-提供されている機能として、会議終了後にの文字起こしをダウンロードできるものはありましたが、リアルタイムで文字起こしを入手するAPIは見つけられませんでした。
+提供されている機能として、会議終了後にの文字起こしをダウンロードできるものはありましたが日本語には対応しておらず、またリアルタイムで文字起こしを入手するAPIは見つけられませんでした。
 Googleさん、リアルタイムで文字起こしを受け取れるAPIの公開をよろしくお願いします！
 
 ## でもやっぱり楽しかった！
