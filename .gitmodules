@@ -1,0 +1,3 @@
+[submodule "meet-addon"]
+	path = meet-addon
+	url = https://github.com/YAKIONIGIRIs/meet-addon
