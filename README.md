@@ -1,16 +1,15 @@
-# zenn-hackathon-2025
-## `uv`のインストール
-```
-# On macOS and Linux.
-curl -LsSf https://astral.sh/uv/install.sh | sh
-```
+# Meetiness
+**Web会議のサポート**を行う**AIエージェント**
 
-## セットアップ
-```
-uv install
-```
+![Meetiness logo](https://raw.githubusercontent.com/YAKIONIGIRIs/meet-addon/refs/heads/main/meetiness_logo.png)
 
-## 実行
-```
-uv run summarize_sample.py sample_meeting.txt
-```
+
+[AI Agent Hackathon with Google Cloud](https://zenn.dev/hackathons/2024-google-cloud-japan-ai-hackathon)提出作品
+
+## ソースコードの内容
+- `meet-transcription-extension`
+  - Google MeetのトランスクリプトをDOMから取得し、サーバーに送信するためのChrome拡張機能のコード
+- `meet-addon`
+  - 前回のミーティングの要約や、進行中のミーティングの補足を行うMeetアドオンのコード
+- `zenn-hackathon-2025-backend`
+  - トランスクリプトの保存や要約、補足情報の生成などを行うサーバーのコード
