@@ -53,7 +53,7 @@ AIエージェントに辞書はもちろん、組織内の資料なども学習
 
 # サービスについて
 ### 「Meetiness」ダウンロードはこちらから
-@[card](https://github.com/YAKIONIGIRIs/zenn-hackathon-2025/tree/develop)
+https://github.com/YAKIONIGIRIs/zenn-hackathon-2025/tree/develop
 
 ## ユーザー像
 このプロジェクトが対象とするのは、Web会議を使用するすべてのユーザーです。
@@ -95,13 +95,14 @@ Chrome上にChrome拡張機能をインストールします。
 
 まずはGitHubからソースコードをダウンロードします。
 
-@[card](https://github.com/YAKIONIGIRIs/zenn-hackathon-2025/tree/develop)
+https://github.com/YAKIONIGIRIs/zenn-hackathon-2025/tree/develop
 
 次にChrome拡張機能を開きます。
 ```
 chrome://extensions/
 ```
 を検索窓に入力します。
+
 
 デベロッパーモードに変更したのちに、ダウンロードしたリポジトリの`meet-transcription-extension`フォルダを取り込みます。
 
@@ -134,7 +135,7 @@ Gooogle Meet画面上にある「…」となっているボタンから「設�
 また、導入に当たっては有償版のGoogle Workspaceの契約およびGoogle Cloudへのアクセス権が必要です。
 :::
 
-Meet Add-on SDKのドキュメントの[Meetアドオンをデプロイする](https://developers.google.com/meet/add-ons/guides/deploy-add-on?hl=ja)を参考に、Meetinessのアドオンをデプロイします。なお、ここではプロジェクトの作成などの説明は省略します。
+Meet Add-ons SDKのドキュメントの[Meetアドオンをデプロイする](https://developers.google.com/meet/add-ons/guides/deploy-add-on?hl=ja)を参考に、Meetinessのアドオンをデプロイします。なお、ここではプロジェクトの作成などの説明は省略します。
 
 1. [Google Workspace Marketplace SDK](https://console.cloud.google.com/apis/api/appsmarket-component.googleapis.com/)を有効化します。
 2. **[HTTP deployments]** タブをクリックします。
@@ -195,9 +196,35 @@ Cloud Runはそれをクライアントのアドオンへ表示させます。
 ![](https://storage.googleapis.com/zenn-user-upload/e4bf18c2f40e-20250208.png)
 
 
+## プログラムの工夫点
+### 文字起こしの取得
+録画済みの動画からSpeech-to-Text APIを使って文字起こしすることは容易ですが、リアルタイムで文字起こしを取得するAPI等は公開されていません。
+そこでDOMを解析して、Google Meetの字幕を取得することにしました。
+
+Google Meetの字幕は
+```
+<div jsname="tgaKEf" class="bh44bd VbkSUe">
+　<span>トランスクリプトの内容</span>
+</div>
+```
+となっていることがわかったので、次の方法で文字起こしを取得しました。
+
+https://github.com/YAKIONIGIRIs/zenn-hackathon-2025/blob/4274098cd0863a9b4fe78d0d3410ab4a237b1d13/meet-transcription-extension/content.js#L12-L50
+
+（当然ながら、Google MeetのUIが変更された場合はこの方法は使えなくなります。）
+
+### Google Meet アドオン
+実は、**Google Meet Add-ons SDKが一般公開になったのは[2024年9月](https://workspaceupdates.googleblog.com/2024/09/google-meet-add-ons-sdk-is-now-available.html)**と、比較的最近のことです。
+アドオンを利用することでユーザーはMeetの画面から離れる必要がないため、UXの向上が期待できます。
+
+下記にTypeScript / Next.js / Chakra UIを使った実装例を示しているため、開発の参考にしていただけるのではないかと思います。
+
+https://github.com/YAKIONIGIRIs/meet-addon/tree/main/addons-web-sdk/samples/hello-world-next-js
+
 
 # これからの展望
 ## マルチプラットフォーム化
+
 現在はGoogle Meetでのみの動作となっていますが、別のWeb会議ツール、別のブラウザ上でも動作を行えるようにします。
 
 ## アドオンの公開
