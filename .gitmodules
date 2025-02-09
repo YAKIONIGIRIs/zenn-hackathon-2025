@@ -1,3 +1,6 @@
 [submodule "meet-addon"]
 	path = meet-addon
 	url = https://github.com/YAKIONIGIRIs/meet-addon
+[submodule "zenn-hackathon-2025-backend"]
+	path = zenn-hackathon-2025-backend
+	url = https://github.com/YAKIONIGIRIs/zenn-hackathon-2025-backend
