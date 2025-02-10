@@ -219,6 +219,7 @@ https://github.com/YAKIONIGIRIs/zenn-hackathon-2025/blob/4274098cd0863a9b4fe78d0
 ### Google Meet アドオン
 実は、**Google Meet Add-ons SDKが一般公開になったのは[2024年9月](https://workspaceupdates.googleblog.com/2024/09/google-meet-add-ons-sdk-is-now-available.html)** と、比較的最近のことです。
 アドオンを利用することでユーザーはMeetの画面から離れる必要がないため、UXの向上が期待できます。
+![](https://storage.googleapis.com/zenn-user-upload/adc8a1ba558d-20250210.png)
 
 下記にTypeScript / Next.js / Chakra UIを使った実装例を示しているため、開発の参考にしていただけるのではないかと思います。
 
