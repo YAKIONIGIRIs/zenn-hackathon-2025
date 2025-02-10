@@ -106,7 +106,10 @@ chrome://extensions/
 
 デベロッパーモードに変更したのちに、ダウンロードしたリポジトリの`meet-transcription-extension`フォルダを取り込みます。
 
-その後、[Google Meet](https://meet.google.com/)にアクセスし、先ほど追加した拡張機能のアイコンをクリックします。すると、名前を入力する画面が右上に現れるため、ここにあなたの名前を入力します。
+その後、[Google Meet](https://meet.google.com/)にアクセスし、先ほど追加した拡張機能のアイコンをクリックします。
+![](https://storage.googleapis.com/zenn-user-upload/b6cfb0f3a184-20250210.png)
+すると、名前を入力する画面が右上に現れるため、ここにあなたの名前を入力します。
+![](https://storage.googleapis.com/zenn-user-upload/3c2eb05c8dc6-20250210.png)
 
 （Google Meetの字幕機能では、自分の発言は「あなた」として文字起こしされてしまうため、話者を特定するために名前を入力します。）
 
